@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}存储型 XSS{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+h1 { color: #e74c3c; }
+input[type="text"], textarea { padding: 10px; width: 100%; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+button { padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+.message { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 3px solid #3498db; }
+.message .author { font-weight: bold; color: #333; }
+.message .content { margin-top: 5px; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+.clear-btn { background: #e74c3c; }
+{% endblock %}
+
+{% block content %}
+<h1>💬 存储型 XSS 测试 - 留言板</h1>
+<p><a href="/xss">← 返回XSS靶场</a></p>
+
+<form method="POST" action="/xss/stored">
+    <input type="text" name="author" placeholder="你的昵称" required><br><br>
+    <textarea name="content" rows="3" placeholder="留言内容" required></textarea>
+    <button type="submit">发表留言</button>
+</form>
+
+<form method="POST" action="/xss/stored/clear" style="display:inline;">
+    <button type="submit" class="clear-btn">清空留言</button>
+</form>
+
+<h2>📝 留言列表</h2>
+{% for msg in messages %}
+<div class="message">
+    <div class="author">{{ msg.author | safe }}</div>
+    <div class="content">{{ msg.content | safe }}</div>
+</div>
+{% endfor %}
+
+{% if not messages %}
+<p style="color: #999;">暂无留言，快来发表第一条吧！</p>
+{% endif %}
+
+<div class="hint">
+    <strong>💡 测试提示：</strong><br>
+    在昵称或内容中尝试: <code>&lt;script&gt;alert('Stored XSS')&lt;/script&gt;</code><br>
+    存储型XSS会影响所有访问该页面的用户！
+</div>
+{% endblock %}

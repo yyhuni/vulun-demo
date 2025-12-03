@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}XSS 漏洞靶场{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+h1 { color: #333; border-bottom: 2px solid #e74c3c; padding-bottom: 10px; }
+.vuln-card { background: #f9f9f9; border-left: 4px solid #e74c3c; padding: 15px; margin: 20px 0; }
+.vuln-card h3 { margin-top: 0; color: #e74c3c; }
+a { color: #3498db; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.warning { background: #fff3cd; border: 1px solid #ffc107; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+.back-link { margin-bottom: 20px; display: inline-block; }
+{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 返回主页</a>
+<h1>🎯 XSS 漏洞靶场</h1>
+<div class="warning">
+    ⚠️ 警告：本靶场仅供安全学习和测试使用，请勿用于非法用途！
+</div>
+
+<div class="vuln-card">
+    <h3>1. 反射型 XSS (Reflected XSS)</h3>
+    <p>用户输入直接反射到页面，未经过滤</p>
+    <a href="/xss/reflected">进入测试 →</a>
+</div>
+
+<div class="vuln-card">
+    <h3>2. 存储型 XSS (Stored XSS)</h3>
+    <p>用户输入存储到数据库，再显示给其他用户</p>
+    <a href="/xss/stored">进入测试 →</a>
+</div>
+
+<div class="vuln-card">
+    <h3>3. DOM型 XSS (DOM-based XSS)</h3>
+    <p>通过修改DOM环境执行恶意脚本</p>
+    <a href="/xss/dom">进入测试 →</a>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}反射型 XSS{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+h1 { color: #e74c3c; }
+input[type="text"] { padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; }
+button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; }
+.result { background: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+{% endblock %}
+
+{% block content %}
+<h1>🔍 反射型 XSS 测试</h1>
+<p><a href="/xss">← 返回XSS靶场</a></p>
+
+<form method="GET" action="/xss/reflected">
+    <input type="text" name="name" placeholder="输入你的名字" value="">
+    <button type="submit">搜索</button>
+</form>
+
+{% if name %}
+<div class="result">
+    <p>你好，<strong>{{ name | safe }}</strong>！欢迎来到靶场。</p>
+</div>
+{% endif %}
+
+<div class="hint">
+    <strong>💡 测试提示：</strong><br>
+    尝试输入: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code><br>
+    或者: <code>&lt;img src=x onerror=alert('XSS')&gt;</code>
+</div>
+{% endblock %}

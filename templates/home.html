@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Web安全漏洞靶场{% endblock %}
+
+{% block extra_style %}
+body { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #fff; }
+.header { background: rgba(0,0,0,0.3); padding: 20px 0; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.header h1 { font-size: 2.5em; margin-bottom: 10px; }
+.header h1 span { color: #e74c3c; }
+.header p { color: #aaa; font-size: 1.1em; }
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+.warning { background: linear-gradient(90deg, #f39c12, #e74c3c); padding: 15px 25px; border-radius: 8px; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+.warning-icon { font-size: 2em; }
+.categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+.category-card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+.category-card:hover { transform: translateY(-5px); border-color: #e74c3c; background: rgba(255,255,255,0.08); }
+.category-card h2 { color: #e74c3c; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+.category-card p { color: #aaa; margin-bottom: 20px; line-height: 1.6; }
+.category-card a { display: inline-block; background: #e74c3c; color: white; padding: 10px 25px; border-radius: 6px; text-decoration: none; transition: background 0.3s; }
+.category-card a:hover { background: #c0392b; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+.stat-item { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; text-align: center; }
+.stat-item .number { font-size: 2.5em; color: #e74c3c; font-weight: bold; }
+.stat-item .label { color: #aaa; margin-top: 5px; }
+.coming-soon { opacity: 0.5; }
+.coming-soon a { background: #555 !important; cursor: not-allowed; }
+.badge { background: #27ae60; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8em; margin-left: 10px; }
+.badge.soon { background: #7f8c8d; }
+footer { text-align: center; padding: 30px; color: #666; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>🛡️ Web<span>安全</span>漏洞靶场</h1>
+    <p>学习Web安全，从实践开始 | Learn Web Security by Practice</p>
+</div>
+
+<div class="container">
+    <div class="warning">
+        <span class="warning-icon">⚠️</span>
+        <div>
+            <strong>安全警告</strong><br>
+            本靶场仅供安全学习和授权测试使用，严禁用于非法用途！使用者需自行承担法律责任。
+        </div>
+    </div>
+    
+    <div class="stats">
+        {% for stat in stats %}
+        <div class="stat-item">
+            <div class="number">{{ stat.count }}</div>
+            <div class="label">{{ stat.label }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="categories">
+        {% for cat in categories %}
+        <div class="category-card {% if not cat.available %}coming-soon{% endif %}">
+            <h2>{{ cat.icon }} {{ cat.name }} <span class="badge {% if not cat.available %}soon{% endif %}">{{ '可用' if cat.available else '开发中' }}</span></h2>
+            <p>{{ cat.description }}</p>
+            <p><strong>{{ '包含' if cat.available else '计划' }}场景：</strong>{{ cat.scenarios }}</p>
+            <a href="{{ cat.url if cat.available else '#' }}">{{ '进入靶场 →' if cat.available else '敬请期待' }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<footer>
+    <p>🎯 Web安全漏洞靶场 Demo | 仅供学习使用</p>
+</footer>
+{% endblock %}

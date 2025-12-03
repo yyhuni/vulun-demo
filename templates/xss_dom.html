@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}DOM型 XSS{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+h1 { color: #e74c3c; }
+input[type="text"] { padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; }
+button { padding: 10px 20px; background: #9b59b6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+.result { background: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+{% endblock %}
+
+{% block content %}
+<h1>🌐 DOM型 XSS 测试</h1>
+<p><a href="/xss">← 返回XSS靶场</a></p>
+
+<input type="text" id="userInput" placeholder="输入内容">
+<button onclick="showResult()">显示</button>
+
+<div class="result" id="output"></div>
+
+<script>
+    function showResult() {
+        var input = document.getElementById('userInput').value;
+        document.getElementById('output').innerHTML = '你输入了: ' + input;
+    }
+    
+    var urlParams = new URLSearchParams(window.location.search);
+    var msg = urlParams.get('msg');
+    if (msg) {
+        document.getElementById('output').innerHTML = '来自URL的消息: ' + msg;
+    }
+</script>
+
+<div class="hint">
+    <strong>💡 测试提示：</strong><br>
+    1. 在输入框中尝试: <code>&lt;img src=x onerror=alert('DOM XSS')&gt;</code><br>
+    2. 或者访问: <code>/xss/dom?msg=&lt;img src=x onerror=alert('URL XSS')&gt;</code>
+</div>
+{% endblock %}
