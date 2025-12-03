@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}备份文件泄露{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; }
+h1 { color: #f39c12; }
+.backup-item { background: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #f39c12; }
+.backup-item .filename { font-weight: bold; color: #333; font-size: 1.1em; font-family: monospace; }
+.backup-item .description { color: #666; margin: 5px 0; }
+.risk { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 0.9em; font-weight: bold; }
+.risk.high { background: #f39c12; color: white; }
+.risk.critical { background: #e74c3c; color: white; }
+.content { background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+{% endblock %}
+
+{% block content %}
+<h1>💾 备份文件泄露演示</h1>
+<p><a href="/sensitive">← 返回敏感目录靶场</a></p>
+
+<div class="hint">
+    <strong>💡 什么是备份文件泄露？</strong><br>
+    开发人员在部署时遗留的备份文件（如 .bak、.sql、.tar.gz 等）可能包含完整的源代码、数据库数据或配置信息，成为严重的安全隐患。
+</div>
+
+{% for backup in backups %}
+<div class="backup-item">
+    <div class="filename">📄 {{ backup.filename }}</div>
+    <div class="description">{{ backup.description }}</div>
+    <div>
+        <span class="risk {% if backup.risk == '严重' %}critical{% else %}high{% endif %}">{{ backup.risk }}风险</span>
+    </div>
+    <div class="content">
+        <strong>包含信息：</strong><br>
+        {{ backup.content }}
+    </div>
+</div>
+{% endfor %}
+
+<div class="hint">
+    <strong>🛡️ 防护建议：</strong><br>
+    1. 部署前清理所有备份文件<br>
+    2. 使用 .gitignore 防止备份文件被提交<br>
+    3. 配置 Web 服务器阻止访问 .bak、.sql 等文件<br>
+    4. 定期扫描服务器查找遗留的备份文件<br>
+    5. 使用自动化部署工具确保清洁部署
+</div>
+{% endblock %}

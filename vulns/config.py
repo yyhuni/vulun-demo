@@ -9,8 +9,8 @@ VULN_MODULES = []
 # 统计信息
 STATS = [
     {'count': 3, 'label': 'XSS漏洞场景'},
+    {'count': 3, 'label': '敏感目录场景'},
     {'count': 0, 'label': 'SQL注入场景'},
-    {'count': 0, 'label': '文件上传场景'},
     {'count': 0, 'label': '其他漏洞'},
 ]
 
@@ -22,6 +22,14 @@ CATEGORIES = [
         'description': '跨站脚本攻击是最常见的Web漏洞之一。攻击者通过注入恶意脚本，可以窃取用户Cookie、劫持会话、钓鱼攻击等。',
         'scenarios': '反射型XSS、存储型XSS、DOM型XSS',
         'url': '/xss',
+        'available': True,
+    },
+    {
+        'name': '敏感目录暴露',
+        'icon': '📁',
+        'description': '敏感目录和文件暴露是常见的信息泄露漏洞。攻击者可以通过访问未受保护的目录获取源代码、配置文件、备份文件等敏感信息。',
+        'scenarios': '目录遍历、备份文件泄露、配置文件泄露',
+        'url': '/sensitive',
         'available': True,
     },
     {

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}目录遍历{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; }
+h1 { color: #f39c12; }
+.directory-item { background: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #f39c12; }
+.directory-item .name { font-weight: bold; color: #333; font-size: 1.1em; }
+.directory-item .description { color: #666; margin: 5px 0; }
+.risk { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 0.9em; font-weight: bold; }
+.risk.high { background: #f39c12; color: white; }
+.risk.critical { background: #e74c3c; color: white; }
+.content { background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+{% endblock %}
+
+{% block content %}
+<h1>🔍 目录遍历演示</h1>
+<p><a href="/sensitive">← 返回敏感目录靶场</a></p>
+
+<div class="hint">
+    <strong>💡 什么是目录遍历？</strong><br>
+    当 Web 服务器配置不当时，攻击者可以直接访问和列举目录内容，获取敏感的目录结构和文件信息。
+</div>
+
+{% for dir in directories %}
+<div class="directory-item">
+    <div class="name">📂 {{ dir.name }}</div>
+    <div class="description">{{ dir.description }}</div>
+    <div>
+        <span class="risk {% if dir.risk == '严重' %}critical{% else %}high{% endif %}">{{ dir.risk }}风险</span>
+    </div>
+    <div class="content">
+        <strong>包含内容：</strong><br>
+        {{ dir.content }}
+    </div>
+</div>
+{% endfor %}
+
+<div class="hint">
+    <strong>🛡️ 防护建议：</strong><br>
+    1. 配置 Web 服务器禁用目录列表<br>
+    2. 使用 .htaccess 或 nginx 配置限制目录访问<br>
+    3. 将敏感目录放在 Web 根目录外<br>
+    4. 定期审计目录权限配置
+</div>
+{% endblock %}

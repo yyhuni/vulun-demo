@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}源代码泄露{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; }
+h1 { color: #f39c12; }
+.source-item { background: #f9f9f9; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #f39c12; }
+.source-item .filename { font-weight: bold; color: #333; font-size: 1.1em; font-family: monospace; }
+.source-item .description { color: #666; margin: 5px 0; }
+.risk { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 0.9em; font-weight: bold; }
+.risk.high { background: #f39c12; color: white; }
+.risk.critical { background: #e74c3c; color: white; }
+.content { background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+.hint { background: #e8f4f8; padding: 10px; margin: 20px 0; border-radius: 5px; }
+a { color: #3498db; }
+{% endblock %}
+
+{% block content %}
+<h1>💻 源代码泄露演示</h1>
+<p><a href="/sensitive">← 返回敏感目录靶场</a></p>
+
+<div class="hint">
+    <strong>💡 什么是源代码泄露？</strong><br>
+    源代码文件被意外暴露（通过目录遍历、备份文件、Git 仓库等）会导致攻击者了解应用逻辑、发现硬编码的密钥和漏洞。
+</div>
+
+{% for file in files %}
+<div class="source-item">
+    <div class="filename">📝 {{ file.filename }}</div>
+    <div class="description">{{ file.description }}</div>
+    <div>
+        <span class="risk {% if file.risk == '严重' %}critical{% else %}high{% endif %}">{{ file.risk }}风险</span>
+    </div>
+    <div class="content">
+        <strong>包含信息：</strong><br>
+        {{ file.content }}
+    </div>
+    {% if file.url %}
+    <div style="margin-top: 10px;">
+        <a href="{{ file.url }}" style="background: #3498db; color: white; padding: 5px 10px; border-radius: 3px; text-decoration: none; display: inline-block;">📥 下载文件</a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+
+<div class="hint">
+    <strong>🛡️ 防护建议：</strong><br>
+    1. 不要在源代码中硬编码密钥和密码<br>
+    2. 使用环境变量或密钥管理服务存储敏感信息<br>
+    3. 配置 Web 服务器阻止访问源代码文件<br>
+    4. 不要在 Web 根目录下放置源代码<br>
+    5. 定期检查 .git 目录是否被暴露<br>
+    6. 使用代码混淆和编译来保护源代码
+</div>
+{% endblock %}

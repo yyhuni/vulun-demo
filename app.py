@@ -3,11 +3,13 @@ Web Security Vulnerability Lab
 Modular architecture for easy extension
 """
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 
 from config import Config
 from vulns.config import CATEGORIES, STATS
 from vulns.xss import xss_bp
+from vulns.sensitive import sensitive_bp
+from vulns.sensitive.files import get_sensitive_file
 
 
 def create_app():
@@ -17,10 +19,20 @@ def create_app():
     
     # Register vulnerability blueprints
     app.register_blueprint(xss_bp)
+    app.register_blueprint(sensitive_bp)
     
     @app.route('/')
     def home():
         return render_template('home.html', categories=CATEGORIES, stats=STATS)
+    
+    # 敏感文件访问路由
+    @app.route('/<path:filepath>')
+    def sensitive_file(filepath):
+        """处理敏感文件访问"""
+        content = get_sensitive_file(filepath)
+        if content:
+            return Response(content, mimetype='text/plain')
+        return 'Not Found', 404
     
     return app
 
@@ -38,5 +50,6 @@ if __name__ == '__main__':
     print("=" * 50)
     print("\nLoaded modules:")
     print("  - XSS (/xss)")
+    print("  - Sensitive Directory (/sensitive)")
     print("")
     app.run(debug=True, host=host, port=port)

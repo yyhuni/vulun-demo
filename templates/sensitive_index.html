@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}敏感目录暴露靶场{% endblock %}
+
+{% block extra_style %}
+body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; }
+h1 { color: #333; border-bottom: 2px solid #f39c12; padding-bottom: 10px; }
+.vuln-card { background: #f9f9f9; border-left: 4px solid #f39c12; padding: 15px; margin: 20px 0; }
+.vuln-card h3 { margin-top: 0; color: #f39c12; }
+a { color: #3498db; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.warning { background: #fff3cd; border: 1px solid #ffc107; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+.back-link { margin-bottom: 20px; display: inline-block; }
+{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link">← 返回主页</a>
+<h1>📁 敏感目录暴露靶场</h1>
+<div class="warning">
+    ⚠️ 警告：本靶场仅供安全学习和测试使用，请勿用于非法用途！
+</div>
+
+<div class="vuln-card">
+    <h3>1. 目录遍历 (Directory Listing)</h3>
+    <p>未受保护的目录允许直接访问和列举，暴露敏感目录结构</p>
+    <a href="/sensitive/directory">进入测试 →</a>
+</div>
+
+<div class="vuln-card">
+    <h3>2. 备份文件泄露 (Backup Files)</h3>
+    <p>遗留的备份文件（.bak、.sql、.tar.gz等）暴露敏感数据</p>
+    <a href="/sensitive/backup">进入测试 →</a>
+</div>
+
+<div class="vuln-card">
+    <h3>3. 源代码泄露 (Source Code Disclosure)</h3>
+    <p>源代码文件被意外暴露，导致逻辑和密钥信息泄露</p>
+    <a href="/sensitive/source">进入测试 →</a>
+</div>
+{% endblock %}
