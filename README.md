@@ -20,6 +20,10 @@ pip install -r requirements.txt
 ### 3. 运行应用
 ```bash
 python3 app.py
+
+# 指定端口启动
+PORT=8900 python app.py
+
 ```
 
 访问 http://localhost:80
