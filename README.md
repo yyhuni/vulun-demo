@@ -22,7 +22,7 @@ pip install -r requirements.txt
 python3 app.py
 
 # 指定端口启动
-PORT=8900 python app.py
+PORT=8080 python app.py
 
 ```
 
